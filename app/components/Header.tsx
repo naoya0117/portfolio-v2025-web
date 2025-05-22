@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useSlideNavigation } from '../hooks/useSlideNavigation';
 
 export default function Header() {
@@ -70,14 +71,21 @@ export default function Header() {
                 実務経験
               </a>
             </li>
-            <li>
+            <li className="nav-item-dropdown">
               <a 
                 href="#blog" 
                 onClick={(e) => handleNavClick(e, 'blog')}
-                className="nav-link"
+                className="nav-link dropdown-trigger"
               >
                 ブログ
+                <i className="fas fa-chevron-down dropdown-icon"></i>
               </a>
+              <div className="dropdown-menu">
+                <Link href="/blog" className="dropdown-item">
+                  <i className="fas fa-external-link-alt"></i>
+                  ブログページ
+                </Link>
+              </div>
             </li>
             <li>
               <a 

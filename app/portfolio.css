@@ -1,0 +1,901 @@
+/* 全体のスタイル */
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #334e68;
+    --accent-color: #61dafb;
+    --bg-color: #f8f9fa;
+    --text-color: #333;
+    --light-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --success-color: #28a745;
+    --font-sans: 'Helvetica Neue', Arial, sans-serif;
+    --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+a:hover {
+    color: var(--accent-color);
+}
+
+/* ヘッダースタイル */
+header {
+    background-color: white;
+    box-shadow: var(--shadow);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 15px 0;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+header p {
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 5px 0;
+    position: relative;
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 100%;
+}
+
+/* ヒーローセクション */
+#hero {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 150px 0 100px;
+    text-align: center;
+}
+
+.hero-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    border-radius: 5px;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.btn.primary {
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+}
+
+.btn.primary:hover {
+    background-color: white;
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.btn.secondary {
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn.secondary:hover {
+    background-color: white;
+    color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+/* セクション共通スタイル */
+.section {
+    padding: 80px 0;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+    color: var(--secondary-color);
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: var(--accent-color);
+    margin: 15px auto 0;
+}
+
+/* 自己紹介セクション */
+.about-content {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.about-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.about-text p {
+    margin-bottom: 15px;
+}
+
+/* 経歴セクション */
+.timeline {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 120px;
+    width: 3px;
+    background-color: var(--light-gray);
+}
+
+.timeline-item {
+    display: flex;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.timeline-date {
+    width: 120px;
+    padding-right: 20px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.timeline-content {
+    flex: 1;
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+    margin-left: 20px;
+}
+
+.timeline-content h3 {
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+}
+
+.timeline-content p {
+    color: var(--dark-gray);
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 118px;
+    top: 15px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--accent-color);
+    z-index: 1;
+}
+
+/* スキルセクション */
+.skills-content {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.skill-category {
+    min-width: 300px;
+}
+
+.skill-category:first-child {
+    /* 主要スキル */
+}
+
+/* 右側のカラムを縦に配置 */
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.skill-category h3 {
+    margin-bottom: 30px;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+}
+
+/* 主要スキルのグリッドレイアウト */
+.main-skills-grid {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.main-skill-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border-left: 4px solid var(--accent-color);
+}
+
+.main-skill-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.main-skill-card h4 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 12px 0;
+}
+
+.main-skill-card p {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* その他のスキルセクション */
+.other-skills-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+}
+
+.skill-group {
+    margin-bottom: 24px;
+}
+
+.skill-group:last-child {
+    margin-bottom: 0;
+}
+
+.skill-group h4 {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skill-tag {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: var(--light-gray);
+    color: var(--secondary-color);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.skill-tag:hover {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.skill-tags.learning .skill-tag {
+    background-color: rgba(74, 111, 165, 0.1);
+    color: var(--primary-color);
+    border: 1px solid rgba(74, 111, 165, 0.3);
+}
+
+.skill-tags.learning .skill-tag:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* GitHub統計セクション */
+.github-stats-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.github-stat-group {
+    margin-bottom: 0;
+}
+
+.github-stat-group h4 {
+    color: var(--secondary-color);
+    font-size: 1rem;
+    margin-bottom: 16px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.github-stats-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.github-stats-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.github-stats-image:hover {
+    transform: scale(1.02);
+}
+
+.github-stats-credit {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+    text-align: center;
+}
+
+.github-stats-credit a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.github-stats-credit a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* GitHub統計セクション（その他スキル内） */
+.github-stats-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+}
+
+.github-stats-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    transition: var(--transition);
+}
+
+.github-stats-image:hover {
+    transform: scale(1.02);
+}
+
+.github-stats-credit {
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+    text-align: center;
+}
+
+.github-stats-credit a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.github-stats-credit a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+/* プロジェクトセクション */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.project-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.project-header {
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.project-header h3 {
+    margin-bottom: 10px;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.project-tag {
+    display: inline-block;
+    padding: 3px 8px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+.project-body {
+    padding: 20px;
+}
+
+.project-body p {
+    margin-bottom: 15px;
+}
+
+.project-links {
+    display: flex;
+    gap: 15px;
+}
+
+.project-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.project-link i {
+    margin-right: 5px;
+}
+
+/* 実務経験セクション */
+.work-item {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.work-header {
+    padding: 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.work-header h3 {
+    font-size: 1.2rem;
+}
+
+.work-period {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.work-body {
+    padding: 20px;
+}
+
+.work-body p {
+    margin-bottom: 15px;
+}
+
+.work-links {
+    margin-bottom: 15px;
+}
+
+.work-link {
+    display: inline-block;
+    margin-right: 15px;
+    font-weight: 500;
+}
+
+.work-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.work-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+    border-radius: 5px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* コンタクトセクション */
+.contact-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.contact-content > p {
+    margin-bottom: 30px;
+}
+
+.contact-methods {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+}
+
+.contact-method {
+    background-color: white;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    min-width: 200px;
+    transition: var(--transition);
+}
+
+.contact-method:hover {
+    transform: translateY(-5px);
+}
+
+.contact-method i {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 15px;
+}
+
+.contact-method h3 {
+    margin-bottom: 10px;
+    color: var(--secondary-color);
+}
+
+.contact-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    text-align: left;
+}
+
+.contact-form h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--light-gray);
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+/* フッター */
+footer {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 30px 0;
+    text-align: center;
+}
+
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+}
+
+.social-links a {
+    color: white;
+    font-size: 1.2rem;
+    transition: var(--transition);
+    position: relative;
+}
+
+.social-links a:hover {
+    color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+/* GitHub仕事用のアイコンを少し区別 */
+.social-links a:nth-child(2) i {
+    opacity: 0.8;
+}
+
+.social-links a:nth-child(2):hover i {
+    opacity: 1;
+}
+
+/* レスポンシブスタイル */
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    nav {
+        margin-top: 15px;
+    }
+    
+    nav ul {
+        justify-content: center;
+    }
+    
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+    
+    .timeline::before {
+        left: 30px;
+    }
+    
+    .timeline-item {
+        flex-direction: column;
+    }
+    
+    .timeline-date {
+        width: 100%;
+        text-align: left;
+        padding-left: 50px;
+        margin-bottom: 10px;
+    }
+    
+    .timeline-content {
+        margin-left: 50px;
+    }
+    
+    .timeline-item::before {
+        left: 28px;
+    }
+    
+    /* スキルセクションのレスポンシブ */
+    .skills-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .right-column {
+        gap: 24px;
+    }
+    
+    .main-skills-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .main-skill-card {
+        padding: 20px;
+    }
+    
+    .other-skills-section {
+        padding: 20px;
+    }
+    
+    /* GitHub統計のレスポンシブ */
+    .github-stats-section {
+        padding: 20px;
+    }
+    
+    .github-stats-image {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    footer .container {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section {
+    animation: fadeIn 0.8s ease forwards;
+}
+
+/* スクロール時のナビゲーションハイライト */
+.nav-active {
+    color: var(--accent-color);
+}
+
+.nav-active::after {
+    width: 100%;
+}
+
+/* スライド遷移用のスタイル */
+.nav-link {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* セクション遷移アニメーション */
+.section {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.section.slide-transition {
+    opacity: 0.3;
+    transform: translateX(-20px);
+}
+
+/* スムーズなスクロール動作 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* スライド遷移時のページロック */
+body.slide-transition-active {
+    overflow: hidden;
+}
+
+/* スクロールトップボタン */
+.scroll-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 999;
+}
+
+.scroll-top.visible {
+    opacity: 1;
+}
+
+.scroll-top:hover {
+    transform: translateY(-5px);
+    background-color: var(--accent-color);
+}

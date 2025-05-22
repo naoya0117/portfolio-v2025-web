@@ -616,6 +616,129 @@ nav a:hover::after {
     margin: 0 auto;
 }
 
+/* ブログセクション */
+.blog-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.blog-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    border: 1px solid var(--light-gray);
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.blog-image {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background-color: var(--light-gray);
+}
+
+.blog-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.blog-card:hover .blog-thumbnail {
+    transform: scale(1.05);
+}
+
+.blog-card-content {
+    padding: 24px;
+}
+
+.blog-meta {
+    margin-bottom: 12px;
+}
+
+.blog-date {
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.blog-title {
+    margin-bottom: 16px;
+    font-size: 1.2rem;
+    line-height: 1.4;
+}
+
+.blog-title a {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.blog-title a:hover {
+    color: var(--primary-color);
+}
+
+.blog-excerpt {
+    color: var(--dark-gray);
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+}
+
+.blog-link {
+    text-align: right;
+}
+
+.read-more {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.read-more:hover {
+    color: var(--accent-color);
+}
+
+.read-more i {
+    font-size: 0.8rem;
+}
+
+/* ブログの状態表示 */
+.blog-loading,
+.blog-error,
+.blog-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--dark-gray);
+}
+
+.blog-error {
+    color: #e74c3c;
+}
+
+.error-detail {
+    font-size: 0.9rem;
+    margin-top: 10px;
+    opacity: 0.8;
+}
+
 .contact-content > p {
     margin-bottom: 30px;
 }
@@ -807,6 +930,16 @@ footer .container {
     .github-stats-image {
         max-width: 100%;
         width: 100%;
+    }
+    
+    /* ブログのレスポンシブ */
+    .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .blog-card-content {
+        padding: 20px;
     }
     
     footer .container {

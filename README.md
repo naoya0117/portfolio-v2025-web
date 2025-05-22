@@ -2,6 +2,27 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ## Getting Started
 
+### Environment Setup
+
+1. Copy the environment variables template:
+```bash
+cp .env.example .env.local
+```
+
+2. Configure the WordPress API URL in `.env.local`:
+```bash
+# For local development
+NEXT_PUBLIC_WORDPRESS_API_URL=http://localhost:8080
+
+# For production with HTTPS
+# NEXT_PUBLIC_WORDPRESS_API_URL=https://your-wordpress-site.com
+
+# For staging environment
+# NEXT_PUBLIC_WORDPRESS_API_URL=https://staging.your-wordpress-site.com
+```
+
+### Development Server
+
 First, run the development server:
 
 ```bash
@@ -17,6 +38,15 @@ bun dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+### WordPress Integration
+
+This portfolio includes a blog section that fetches articles from a WordPress REST API. Make sure your WordPress server is running and accessible at the URL specified in `NEXT_PUBLIC_WORDPRESS_API_URL`.
+
+The blog section will automatically:
+- Fetch the latest 6 posts
+- Display post titles, excerpts, and featured images
+- Handle loading and error states gracefully
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

@@ -47,7 +47,7 @@ export default function Card({
         {links.length > 0 && (
           <div className={linksClassName}>
             {links.map((link, index) => (
-              <Link key={index} href={link.url} className={linkClassName} target="_blank" rel="noopener noreferrer">
+              <Link key={index} href={link.url} className={linkClassName}>
                 {link.icon && <i className={link.icon}></i>} {link.label}
               </Link>
             ))}

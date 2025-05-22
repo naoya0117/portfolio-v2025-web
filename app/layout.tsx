@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Naoya - エンジニアポートフォリオ",
+  title: "Naoya - ポートフォリオ",
   description: "Web開発、Linux、コンテナ技術を中心に学習中のエンジニア志望学生のポートフォリオサイトです。",
   icons: {
     icon: [

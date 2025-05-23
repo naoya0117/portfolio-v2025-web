@@ -1,21 +1,142 @@
 'use client';
 
-import Link from 'next/link';
 import { useSlideNavigation } from '../hooks/useSlideNavigation';
+import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
   const { slideToSection } = useSlideNavigation();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLLIElement>(null);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const router = useRouter();
+
+  // タッチデバイスの検出
+  useEffect(() => {
+    const detectTouchDevice = () => {
+      setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    };
+    detectTouchDevice();
+    window.addEventListener('touchstart', () => setIsTouchDevice(true), { once: true });
+    return () => {
+      window.removeEventListener('touchstart', () => setIsTouchDevice(true));
+    };
+  }, []);
+
+  // アクティブタッチ状態をクリアする関数
+  const clearActiveTouch = () => {
+    if (dropdownRef.current) {
+      const activeElements = dropdownRef.current.querySelectorAll('.active-touch');
+      activeElements.forEach(element => {
+        element.classList.remove('active-touch');
+      });
+    }
+  };
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
     slideToSection(sectionId);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      action();
+    }
+  };
+
+  // ドロップダウンはhoverのみで操作するため、クリックイベントは不要
+
+  // モバイルでのタッチアクティブ状態の管理とドロップダウン制御
+  useEffect(() => {
+    const handleTouchStart = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      const navElement = target.closest('.nav-link') || 
+                        target.closest('.dropdown-trigger') || 
+                        target.closest('.dropdown-item') ||
+                        target.closest('.portfolio-logo-link');
+
+      if (navElement) {
+        navElement.classList.add('active-touch');
+      }
+
+      // タッチデバイスでドロップダウン外をタッチした場合、ドロップダウンを閉じる
+      if (isTouchDevice && isDropdownOpen) {
+        const isClickInsideDropdown = dropdownRef.current?.contains(target as Node);
+        if (!isClickInsideDropdown) {
+          setIsDropdownOpen(false);
+        }
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      const navElement = target.closest('.nav-link') || 
+                        target.closest('.dropdown-trigger') || 
+                        target.closest('.dropdown-item') ||
+                        target.closest('.portfolio-logo-link');
+
+      if (navElement) {
+        // 少し遅延させてアクティブ状態を解除
+        setTimeout(() => {
+          navElement.classList.remove('active-touch');
+        }, 150);
+
+        // タッチデバイスでドロップダウンアイテムをタッチした場合、ドロップダウンを閉じる
+        if (isTouchDevice) {
+          if (navElement.classList.contains('dropdown-item')) {
+            setTimeout(() => {
+              setIsDropdownOpen(false);
+            }, 150);
+          } else if (navElement.classList.contains('dropdown-trigger')) {
+            // ドロップダウントリガーをタッチした場合は、ドロップダウンの状態を切り替える
+            setTimeout(() => {
+              setIsDropdownOpen(prev => !prev);
+            }, 150);
+          }
+        }
+      }
+    };
+
+    const handleTouchCancel = (e: TouchEvent) => {
+      const target = e.target as HTMLElement;
+      const navElement = target.closest('.nav-link') || 
+                        target.closest('.dropdown-trigger') || 
+                        target.closest('.dropdown-item') ||
+                        target.closest('.portfolio-logo-link');
+
+      if (navElement) {
+        navElement.classList.remove('active-touch');
+      }
+    };
+
+    // タッチイベントリスナーを追加
+    document.addEventListener('touchstart', handleTouchStart);
+    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchcancel', handleTouchCancel);
+
+    return () => {
+      document.removeEventListener('touchstart', handleTouchStart);
+      document.removeEventListener('touchend', handleTouchEnd);
+      document.removeEventListener('touchcancel', handleTouchCancel);
+    };
+  }, [isTouchDevice, isDropdownOpen]);
+
   return (
     <header>
       <div className="container">
-        <h1>Naoya&apos;s Portfolio</h1>
-        <nav>
+        <div className="header-content">
+          <div className="portfolio-brand">
+            <a 
+              href="#hero" 
+              onClick={(e) => handleNavClick(e, 'hero')}
+              className="portfolio-logo-link"
+            >
+              <span className="portfolio-logo">Naoya&apos;s</span>
+              <span className="portfolio-title">Portfolio</span>
+            </a>
+          </div>
+          <nav className="portfolio-nav">
           <ul>
             <li>
               <a 
@@ -71,28 +192,45 @@ export default function Header() {
                 実務経験
               </a>
             </li>
-            <li className="nav-item-dropdown">
-              <a 
-                href="#blog" 
-                onClick={(e) => handleNavClick(e, 'blog')}
+            <li 
+              className="nav-item-dropdown" 
+              ref={dropdownRef}
+              onMouseEnter={() => !isTouchDevice && setIsDropdownOpen(true)}
+              onMouseLeave={() => {
+                if (!isTouchDevice) {
+                  setIsDropdownOpen(false);
+                  clearActiveTouch();
+                }
+              }}
+            >
+              <span 
                 className="nav-link dropdown-trigger"
                 role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleNavClick(e as any, 'blog');
-                  }
-                }}
               >
                 ブログ
                 <i className="fas fa-chevron-down dropdown-icon"></i>
-              </a>
-              <div className="dropdown-menu">
-                <Link href="/blog" className="dropdown-item">
+              </span>
+              <div className={`dropdown-menu ${isDropdownOpen ? 'dropdown-open' : ''}`}>
+                <a 
+                  href="#blog" 
+                  onClick={(e) => handleNavClick(e, 'blog')}
+                  onKeyDown={(e) => handleKeyDown(e, () => slideToSection('blog'))}
+                  className="dropdown-item"
+                >
+                  <i className="fas fa-anchor"></i>
+                  ブログセクション
+                </a>
+                <a 
+                  href="#" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push('/blog');
+                  }}
+                  className="dropdown-item"
+                >
                   <i className="fas fa-external-link-alt"></i>
                   ブログページ
-                </Link>
+                </a>
               </div>
             </li>
             <li>
@@ -106,6 +244,7 @@ export default function Header() {
             </li>
           </ul>
         </nav>
+        </div>
       </div>
     </header>
   );

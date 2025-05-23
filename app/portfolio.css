@@ -12,6 +12,7 @@
     --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     --transition: all 0.3s ease;
+    --header-height: 80px; /* ヘッダーの基本高さ */
 }
 
 * {
@@ -28,6 +29,9 @@ body {
     overflow-x: hidden;
 }
 
+/* ページ遷移アニメーション - 削除済み */
+
+
 .container {
     width: 100%;
     max-width: 1200px;
@@ -41,8 +45,11 @@ a {
     transition: var(--transition);
 }
 
-a:hover {
-    color: var(--accent-color);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    a:hover {
+        color: var(--accent-color);
+    }
 }
 
 /* ヘッダースタイル */
@@ -57,6 +64,71 @@ header {
     padding: 15px 0;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.portfolio-brand {
+    display: flex;
+    align-items: center;
+}
+
+.portfolio-logo-link {
+    text-decoration: none;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    transition: var(--transition);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .portfolio-logo-link:hover {
+        transform: translateY(-2px);
+    }
+}
+
+/* モバイルでのポートフォリオロゴリンクのアクティブ状態 */
+@media (max-width: 768px) {
+    .portfolio-logo-link:active,
+    .portfolio-logo-link.active-touch {
+        background-color: var(--accent-color);
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .portfolio-logo-link:active .portfolio-logo,
+    .portfolio-logo-link.active-touch .portfolio-logo {
+        color: white;
+    }
+
+    .portfolio-logo-link:active .portfolio-title,
+    .portfolio-logo-link.active-touch .portfolio-title {
+        color: white;
+    }
+
+    .portfolio-logo-link.active-touch {
+        animation: touchRipple 0.3s ease-out;
+    }
+}
+
+.portfolio-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.portfolio-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+
 header .container {
     display: flex;
     justify-content: space-between;
@@ -64,6 +136,7 @@ header .container {
     flex-wrap: wrap;
 }
 
+/* 旧スタイルのh1とpを削除 */
 header h1 {
     font-size: 1.8rem;
     font-weight: 700;
@@ -75,36 +148,87 @@ header p {
     font-size: 0.9rem;
 }
 
-nav ul {
+nav ul,
+.portfolio-nav ul {
     display: flex;
     list-style: none;
     gap: 20px;
     flex-wrap: wrap;
 }
 
-nav a {
+nav a,
+nav .nav-link,
+.portfolio-nav a,
+.portfolio-nav .nav-link {
     font-weight: 500;
     font-size: 0.9rem;
-    padding: 5px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
     position: relative;
     display: flex;
     align-items: center;
     min-height: 24px; /* 統一された高さ */
+    transition: var(--transition);
+    color: var(--dark-gray);
 }
 
-nav a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--accent-color);
-    transition: width 0.3s ease;
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    nav a:hover,
+    nav .nav-link:hover,
+    .portfolio-nav a:hover,
+    .portfolio-nav .nav-link:hover {
+        background-color: var(--light-gray);
+        color: var(--primary-color);
+    }
 }
 
-nav a:hover::after {
-    width: 100%;
+/* 
+ * モバイルナビゲーション - タッチアクティブ状態実装
+ * タッチ開始時にアクティブ状態を適用し、タッチ終了時に解除
+ * リップル効果でより自然なフィードバックを提供
+ */
+
+/* モバイルでのタッチ操作時のアクティブ状態 */
+@media (max-width: 768px) {
+    nav a:active,
+    nav .nav-link:active,
+    nav a.active-touch,
+    nav .nav-link.active-touch,
+    .portfolio-nav a:active,
+    .portfolio-nav .nav-link:active,
+    .portfolio-nav a.active-touch,
+    .portfolio-nav .nav-link.active-touch {
+        background-color: var(--accent-color);
+        color: white;
+        transform: scale(0.95);
+        border-radius: 6px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* タッチ時のリップル効果（オプション） */
+    nav a.active-touch,
+    nav .nav-link.active-touch,
+    .portfolio-nav a.active-touch,
+    .portfolio-nav .nav-link.active-touch {
+        animation: touchRipple 0.3s ease-out;
+    }
+}
+
+@keyframes touchRipple {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(97, 218, 251, 0.7);
+    }
+    50% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 4px rgba(97, 218, 251, 0.3);
+    }
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(97, 218, 251, 0);
+    }
 }
 
 /* ドロップダウンメニューのスタイル */
@@ -119,6 +243,15 @@ nav a:hover::after {
     gap: 6px;
     cursor: pointer;
     min-height: 24px; /* 他のナビゲーションリンクと同じ高さを確保 */
+    color: var(--primary-color);
+    transition: var(--transition);
+}
+
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .dropdown-trigger:hover {
+        color: var(--accent-color);
+    }
 }
 
 .dropdown-trigger::after {
@@ -132,8 +265,33 @@ nav a:hover::after {
     transition: width 0.3s ease;
 }
 
-.dropdown-trigger:hover::after {
-    width: 100%;
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .dropdown-trigger:hover::after {
+        width: 100%;
+    }
+}
+
+/* モバイルでのドロップダウントリガーのアクティブ状態 */
+@media (max-width: 768px) {
+    .dropdown-trigger:active,
+    .dropdown-trigger.active-touch {
+        background-color: var(--accent-color);
+        color: white;
+        transform: scale(0.95);
+        border-radius: 4px;
+        padding: 5px 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-trigger:active::after,
+    .dropdown-trigger.active-touch::after {
+        width: 0;
+    }
+
+    .dropdown-trigger.active-touch {
+        animation: touchRipple 0.3s ease-out;
+    }
 }
 
 .dropdown-icon {
@@ -142,20 +300,13 @@ nav a:hover::after {
     margin-left: 2px;
 }
 
-/* 他のナビゲーションリンクとの統一 */
-nav a {
-    font-weight: 500;
-    font-size: 0.9rem;
-    padding: 5px 0;
-    position: relative;
-    display: flex;
-    align-items: center;
-    min-height: 24px; /* 統一された高さ */
-}
+/* 他のナビゲーションリンクとの統一は上記で設定済み */
 
-.nav-item-dropdown:hover .dropdown-icon,
-.nav-item-dropdown:focus-within .dropdown-icon {
-    transform: rotate(180deg);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .nav-item-dropdown:hover .dropdown-icon {
+        transform: rotate(180deg);
+    }
 }
 
 .dropdown-menu {
@@ -177,8 +328,17 @@ nav a {
     z-index: 1100;
 }
 
-.nav-item-dropdown:hover .dropdown-menu,
-.nav-item-dropdown:focus-within .dropdown-menu {
+/* ホバー機能を持つデバイスでのみドロップダウンメニューを表示 */
+@media (hover: hover) {
+    .nav-item-dropdown:hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* JavaScript制御によるドロップダウンメニューの表示 */
+.dropdown-menu.dropdown-open {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
@@ -196,15 +356,53 @@ nav a {
     font-weight: 500;
 }
 
-.dropdown-item:hover {
-    background-color: var(--light-gray);
-    color: var(--primary-color);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .dropdown-item:hover {
+        background-color: var(--light-gray);
+        color: var(--primary-color);
+    }
 }
 
 .dropdown-item:focus {
     background-color: var(--light-gray);
     color: var(--primary-color);
     outline: none;
+}
+
+/* モバイルでのドロップダウンアイテムのアクティブ状態 */
+@media (max-width: 768px) {
+    .dropdown-item:active,
+    .dropdown-item.active-touch {
+        background-color: var(--accent-color);
+        color: white;
+        transform: scale(0.98);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-item:active i,
+    .dropdown-item.active-touch i {
+        color: white;
+    }
+
+    .dropdown-item.active-touch {
+        animation: touchRippleSmall 0.2s ease-out;
+    }
+}
+
+@keyframes touchRippleSmall {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(97, 218, 251, 0.5);
+    }
+    50% {
+        transform: scale(0.98);
+        box-shadow: 0 0 0 2px rgba(97, 218, 251, 0.2);
+    }
+    100% {
+        transform: scale(0.98);
+        box-shadow: 0 0 0 0 rgba(97, 218, 251, 0);
+    }
 }
 
 .dropdown-item i {
@@ -214,8 +412,11 @@ nav a {
     color: var(--accent-color);
 }
 
-.dropdown-item:hover i {
-    color: var(--primary-color);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .dropdown-item:hover i {
+        color: var(--primary-color);
+    }
 }
 
 /* ドロップダウンの矢印 */
@@ -244,10 +445,13 @@ nav a {
     transition: var(--transition);
 }
 
-.blog-page-link:hover {
-    background-color: var(--primary-color) !important;
-    color: white !important;
-    transform: translateY(-2px);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .blog-page-link:hover {
+        background-color: var(--primary-color) !important;
+        color: white !important;
+        transform: translateY(-2px);
+    }
 }
 
 .blog-page-link::after {
@@ -258,7 +462,7 @@ nav a {
 #hero {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: 150px 0 100px;
+    padding: calc(var(--header-height) + 70px) 0 100px;
     text-align: center;
 }
 
@@ -297,10 +501,13 @@ nav a {
     color: var(--secondary-color);
 }
 
-.btn.primary:hover {
-    background-color: white;
-    color: var(--primary-color);
-    transform: translateY(-2px);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .btn.primary:hover {
+        background-color: white;
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
 }
 
 .btn.secondary {
@@ -309,10 +516,13 @@ nav a {
     border: 2px solid white;
 }
 
-.btn.secondary:hover {
-    background-color: white;
-    color: var(--primary-color);
-    transform: translateY(-2px);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .btn.secondary:hover {
+        background-color: white;
+        color: var(--primary-color);
+        transform: translateY(-2px);
+    }
 }
 
 /* セクション共通スタイル */
@@ -460,9 +670,12 @@ nav a {
     border-left: 4px solid var(--accent-color);
 }
 
-.main-skill-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .main-skill-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
 }
 
 .main-skill-card h4 {
@@ -519,10 +732,13 @@ nav a {
     transition: var(--transition);
 }
 
-.skill-tag:hover {
-    background-color: var(--accent-color);
-    color: white;
-    transform: translateY(-1px);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .skill-tag:hover {
+        background-color: var(--accent-color);
+        color: white;
+        transform: translateY(-1px);
+    }
 }
 
 .skill-tags.learning .skill-tag {
@@ -531,9 +747,12 @@ nav a {
     border: 1px solid rgba(74, 111, 165, 0.3);
 }
 
-.skill-tags.learning .skill-tag:hover {
-    background-color: var(--primary-color);
-    color: white;
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .skill-tags.learning .skill-tag:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
 }
 
 /* GitHub統計セクション */
@@ -570,8 +789,11 @@ nav a {
     transition: var(--transition);
 }
 
-.github-stats-image:hover {
-    transform: scale(1.02);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .github-stats-image:hover {
+        transform: scale(1.02);
+    }
 }
 
 .github-stats-credit {
@@ -588,9 +810,12 @@ nav a {
     transition: var(--transition);
 }
 
-.github-stats-credit a:hover {
-    color: var(--accent-color);
-    text-decoration: underline;
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .github-stats-credit a:hover {
+        color: var(--accent-color);
+        text-decoration: underline;
+    }
 }
 
 /* GitHub統計セクション（その他スキル内） */
@@ -608,8 +833,11 @@ nav a {
     transition: var(--transition);
 }
 
-.github-stats-image:hover {
-    transform: scale(1.02);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .github-stats-image:hover {
+        transform: scale(1.02);
+    }
 }
 
 .github-stats-credit {
@@ -626,9 +854,12 @@ nav a {
     transition: var(--transition);
 }
 
-.github-stats-credit a:hover {
-    color: var(--accent-color);
-    text-decoration: underline;
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .github-stats-credit a:hover {
+        color: var(--accent-color);
+        text-decoration: underline;
+    }
 }
 
 /* プロジェクトセクション */
@@ -646,9 +877,12 @@ nav a {
     transition: var(--transition);
 }
 
-.project-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .project-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
 }
 
 .project-header {
@@ -770,6 +1004,65 @@ nav a {
 .blog-content {
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.view-all-posts {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.view-all-button {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 10px rgba(74, 111, 165, 0.2);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.view-all-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.view-all-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(74, 111, 165, 0.3);
+}
+
+.view-all-button:hover::before {
+    opacity: 1;
+}
+
+.view-all-button i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.view-all-button:hover i {
+    transform: translateX(4px);
+}
+
+.view-all-button span {
+    position: relative;
+    z-index: 1;
 }
 
 .blog-grid {
@@ -910,8 +1203,11 @@ nav a {
     transition: var(--transition);
 }
 
-.contact-method:hover {
-    transform: translateY(-5px);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .contact-method:hover {
+        transform: translateY(-5px);
+    }
 }
 
 .contact-method i {
@@ -993,9 +1289,12 @@ footer .container {
     position: relative;
 }
 
-.social-links a:hover {
-    color: var(--accent-color);
-    transform: translateY(-3px);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .social-links a:hover {
+        color: var(--accent-color);
+        transform: translateY(-3px);
+    }
 }
 
 /* GitHub仕事用のアイコンを少し区別 */
@@ -1003,31 +1302,43 @@ footer .container {
     opacity: 0.8;
 }
 
-.social-links a:nth-child(2):hover i {
-    opacity: 1;
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .social-links a:nth-child(2):hover i {
+        opacity: 1;
+    }
 }
 
 /* レスポンシブスタイル */
 @media (max-width: 768px) {
+    :root {
+        --header-height: 120px; /* モバイルでのヘッダー高さ */
+    }
+
     header .container {
         flex-direction: column;
         text-align: center;
     }
-    
+
     nav {
         margin-top: 15px;
     }
-    
+
     nav ul {
         justify-content: center;
         flex-wrap: wrap;
     }
-    
+
+    /* モバイルでのヒーローセクション調整 */
+    #hero {
+        padding: calc(var(--header-height) + 60px) 0 80px;
+    }
+
     /* モバイルでのドロップダウンメニュー */
     .nav-item-dropdown {
         position: relative;
     }
-    
+
     .dropdown-menu {
         position: absolute;
         top: 100%;
@@ -1046,7 +1357,7 @@ footer .container {
         transition: all 0.3s ease;
         z-index: 1100;
     }
-    
+
     .dropdown-menu::before {
         content: '';
         position: absolute;
@@ -1061,102 +1372,102 @@ footer .container {
         border-right: none;
         transform: translateX(-50%) rotate(45deg);
     }
-    
-    .nav-item-dropdown:hover .dropdown-menu,
-    .nav-item-dropdown:focus-within .dropdown-menu {
+
+    /* ドロップダウンはhoverのみで操作するため、focus-withinは削除 */
+    .dropdown-menu.dropdown-open {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
     }
-    
+
     .dropdown-item {
         padding: 10px 16px;
         font-size: 0.85rem;
     }
-    
+
     /* 非常に小さな画面での調整 */
     @media (max-width: 480px) {
         .dropdown-menu {
             min-width: 160px;
             margin-top: 6px;
         }
-        
+
         .dropdown-item {
             padding: 8px 14px;
             font-size: 0.8rem;
         }
     }
-    
+
     .hero-content h2 {
         font-size: 2rem;
     }
-    
+
     .timeline::before {
         left: 30px;
     }
-    
+
     .timeline-item {
         flex-direction: column;
     }
-    
+
     .timeline-date {
         width: 100%;
         text-align: left;
         padding-left: 50px;
         margin-bottom: 10px;
     }
-    
+
     .timeline-content {
         margin-left: 50px;
     }
-    
+
     .timeline-item::before {
         left: 28px;
     }
-    
+
     /* スキルセクションのレスポンシブ */
     .skills-content {
         grid-template-columns: 1fr;
         gap: 30px;
     }
-    
+
     .right-column {
         gap: 24px;
     }
-    
+
     .main-skills-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }
-    
+
     .main-skill-card {
         padding: 20px;
     }
-    
+
     .other-skills-section {
         padding: 20px;
     }
-    
+
     /* GitHub統計のレスポンシブ */
     .github-stats-section {
         padding: 20px;
     }
-    
+
     .github-stats-image {
         max-width: 100%;
         width: 100%;
     }
-    
+
     /* ブログのレスポンシブ */
     .blog-grid {
         grid-template-columns: 1fr;
         gap: 20px;
     }
-    
+
     .blog-card-content {
         padding: 20px;
     }
-    
+
     footer .container {
         flex-direction: column;
         gap: 15px;
@@ -1194,9 +1505,12 @@ footer .container {
     transition: all 0.3s ease;
 }
 
-.nav-link:hover {
-    color: var(--accent-color);
-    transform: translateY(-2px);
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .nav-link:hover {
+        color: var(--accent-color);
+        transform: translateY(-2px);
+    }
 }
 
 /* セクション遷移アニメーション */
@@ -1250,15 +1564,17 @@ body.slide-transition-active {
 
 /* ブログページ専用スタイル */
 .blog-header {
-    background-color: white;
+    background: linear-gradient(135deg, rgba(74, 111, 165, 0.05), rgba(97, 218, 251, 0.05));
     box-shadow: var(--shadow);
     position: sticky;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1000;
-    padding: 15px 0;
+    padding: 18px 0;
     border-bottom: 1px solid var(--light-gray);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .blog-header-content {
@@ -1279,55 +1595,187 @@ body.slide-transition-active {
     align-items: baseline;
     gap: 8px;
     transition: var(--transition);
+    padding: 6px 10px;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
 }
 
-.blog-home-link:hover {
-    transform: translateY(-2px);
+.blog-home-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 8px;
+}
+
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .blog-home-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-home-link:hover::before {
+        opacity: 0.1;
+    }
+}
+
+/* モバイルでのブログホームリンクのアクティブ状態 */
+@media (max-width: 768px) {
+    .blog-home-link:active,
+    .blog-home-link.active-touch {
+        background-color: var(--accent-color);
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .blog-home-link:active .blog-logo,
+    .blog-home-link.active-touch .blog-logo {
+        color: white;
+    }
+
+    .blog-home-link:active .blog-title,
+    .blog-home-link.active-touch .blog-title {
+        color: white;
+    }
+
+    .blog-home-link.active-touch {
+        animation: touchRipple 0.3s ease-out;
+    }
 }
 
 .blog-logo {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--primary-color);
+    position: relative;
+    z-index: 1;
 }
 
 .blog-title {
     font-size: 1.2rem;
     font-weight: 600;
     color: var(--secondary-color);
+    position: relative;
+    z-index: 1;
 }
 
 .blog-nav ul {
     display: flex;
     list-style: none;
-    gap: 25px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
 .blog-nav-link {
     font-weight: 500;
     font-size: 0.95rem;
-    padding: 8px 12px;
-    border-radius: 6px;
+    padding: 10px 16px;
+    border-radius: 25px;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: var(--transition);
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     color: var(--dark-gray);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
 }
 
-.blog-nav-link:hover {
-    background-color: var(--light-gray);
-    color: var(--primary-color);
+.blog-nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 25px;
+}
+
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .blog-nav-link:hover {
+        background-color: rgba(74, 111, 165, 0.1);
+        color: var(--primary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-color: rgba(74, 111, 165, 0.2);
+    }
+
+    .blog-nav-link:hover::before {
+        opacity: 0.1;
+    }
 }
 
 .blog-nav-link.active {
-    background-color: var(--primary-color);
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     color: white;
+    box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
+    border-color: transparent;
+}
+
+.blog-nav-link.active::before {
+    opacity: 0;
+}
+
+.blog-nav-link.blog-admin-link {
+    background: linear-gradient(90deg, #28a745, #20c997);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(40, 167, 69, 0.2);
+}
+
+/* ホバー機能を持つデバイスでのみhover効果を有効化 */
+@media (hover: hover) {
+    .blog-nav-link.blog-admin-link:hover {
+        background: linear-gradient(90deg, #218838, #1ea088);
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        border-color: transparent;
+    }
 }
 
 .blog-nav-link i {
     font-size: 0.9rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* モバイルでのブログナビゲーションリンクのアクティブ状態 */
+@media (max-width: 768px) {
+    .blog-nav-link:active,
+    .blog-nav-link.active-touch {
+        background-color: var(--accent-color);
+        color: white;
+        transform: scale(0.95);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-color: transparent;
+    }
+
+    .blog-nav-link:active i,
+    .blog-nav-link.active-touch i {
+        color: white;
+    }
+
+    .blog-nav-link.active-touch {
+        animation: touchRipple 0.3s ease-out;
+    }
+
+    /* 管理リンクは特別な色を維持 */
+    .blog-nav-link.blog-admin-link:active,
+    .blog-nav-link.blog-admin-link.active-touch {
+        background: linear-gradient(90deg, #1e7e34, #17a2b8);
+    }
 }
 
 /* ブログページメインコンテンツ */
@@ -1343,110 +1791,190 @@ body.slide-transition-active {
 /* ブログページヒーロー */
 .blog-hero {
     text-align: center;
-    padding: 60px 0 50px;
-    background: linear-gradient(135deg, rgba(74, 111, 165, 0.05), rgba(97, 218, 251, 0.05));
-    border-radius: 12px;
-    margin-bottom: 50px;
+    padding: 80px 0 60px;
+    background: linear-gradient(135deg, rgba(74, 111, 165, 0.1), rgba(97, 218, 251, 0.1));
+    border-radius: 16px;
+    margin-bottom: 60px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.blog-hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(97, 218, 251, 0.05) 0%, transparent 60%);
+    animation: rotate 30s linear infinite;
+    z-index: 0;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .blog-page-title {
-    font-size: 3rem;
-    font-weight: 700;
+    font-size: 3.5rem;
+    font-weight: 800;
     color: var(--primary-color);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .blog-page-title::after {
     content: '';
     display: block;
-    width: 80px;
-    height: 4px;
+    width: 100px;
+    height: 5px;
     background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-    margin: 20px auto 0;
-    border-radius: 2px;
+    margin: 25px auto 0;
+    border-radius: 3px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .blog-page-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: var(--dark-gray);
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    position: relative;
+    z-index: 1;
+    font-weight: 500;
 }
 
 .blog-stats {
-    margin-top: 25px;
+    margin-top: 30px;
+    position: relative;
+    z-index: 1;
 }
 
 .post-count {
     display: inline-block;
-    padding: 8px 16px;
-    background-color: var(--primary-color);
+    padding: 10px 20px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     color: white;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+.post-count:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* ブログ投稿グリッド */
 .blog-posts {
-    margin-bottom: 60px;
+    margin-bottom: 80px;
 }
 
 .blog-posts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 50px;
 }
 
 .blog-post-card {
     background-color: white;
-    border-radius: 16px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: var(--shadow);
-    transition: var(--transition);
-    border: 1px solid var(--light-gray);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: none;
     height: fit-content;
+    position: relative;
+}
+
+.blog-post-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(74, 111, 165, 0.2);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: -1;
 }
 
 .blog-post-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    transform: translateY(-12px);
+}
+
+.blog-post-card:hover::after {
+    opacity: 1;
 }
 
 .blog-post-image {
     width: 100%;
-    height: 250px;
+    height: 280px;
     overflow: hidden;
-    background: linear-gradient(135deg, var(--light-gray), #f1f3f4);
+    background: linear-gradient(135deg, rgba(74, 111, 165, 0.05), rgba(97, 218, 251, 0.05));
     position: relative;
+}
+
+.blog-post-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 70%, rgba(0, 0, 0, 0.2));
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.blog-post-card:hover .blog-post-image::before {
+    opacity: 1;
 }
 
 .blog-post-thumbnail {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: var(--transition);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .blog-post-card:hover .blog-post-thumbnail {
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
 .blog-post-content {
-    padding: 30px;
+    padding: 35px;
+    position: relative;
 }
 
 .blog-post-meta {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
 }
 
 .blog-post-date {
     color: var(--dark-gray);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
+    background-color: rgba(97, 218, 251, 0.1);
+    padding: 6px 14px;
+    border-radius: 20px;
 }
 
 .blog-post-date i {
@@ -1454,48 +1982,92 @@ body.slide-transition-active {
 }
 
 .blog-post-title {
-    margin-bottom: 20px;
-    font-size: 1.4rem;
+    margin-bottom: 22px;
+    font-size: 1.6rem;
     line-height: 1.4;
-    font-weight: 600;
+    font-weight: 700;
+    position: relative;
 }
 
 .blog-post-title a {
     color: var(--secondary-color);
     text-decoration: none;
     transition: var(--transition);
+    background-image: linear-gradient(transparent 95%, var(--accent-color) 5%);
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
 }
 
 .blog-post-title a:hover {
     color: var(--primary-color);
+    background-size: 100% 100%;
 }
 
 .blog-post-excerpt {
     color: var(--dark-gray);
-    line-height: 1.7;
-    margin-bottom: 25px;
-    font-size: 1rem;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    font-size: 1.05rem;
 }
 
 .blog-post-footer {
     display: flex;
     justify-content: flex-end;
-    border-top: 1px solid var(--light-gray);
-    padding-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    padding-top: 25px;
 }
 
 .blog-read-more {
-    color: var(--primary-color);
+    color: white;
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.95rem;
-    transition: var(--transition);
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: 2px solid var(--primary-color);
+    gap: 10px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 4px 10px rgba(74, 111, 165, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.blog-read-more::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.blog-read-more:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(74, 111, 165, 0.3);
+}
+
+.blog-read-more:hover::before {
+    opacity: 1;
+}
+
+.blog-read-more i {
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.blog-read-more span {
+    position: relative;
+    z-index: 1;
+}
+
+.blog-read-more:hover i {
+    transform: translateX(4px);
 }
 
 .blog-read-more:hover {
@@ -1610,59 +2182,230 @@ body.slide-transition-active {
         text-align: center;
         gap: 15px;
     }
-    
+
     .blog-nav ul {
         justify-content: center;
-        gap: 15px;
+        gap: 6px;
     }
-    
+
     .blog-nav-link {
-        font-size: 0.9rem;
-        padding: 6px 10px;
+        font-size: 0.85rem;
+        padding: 8px 12px;
     }
-    
+
     .blog-page-title {
         font-size: 2.2rem;
     }
-    
+
     .blog-page-subtitle {
         font-size: 1.1rem;
     }
-    
+
     .blog-posts-grid {
         grid-template-columns: 1fr;
         gap: 25px;
     }
-    
+
     .blog-post-content {
         padding: 25px;
     }
-    
+
     .blog-post-title {
         font-size: 1.25rem;
     }
-    
+
     .blog-hero {
         padding: 40px 20px 35px;
         margin-bottom: 35px;
     }
 }
 
+/* ブログページ専用 480px以下の調整 */
 @media (max-width: 480px) {
+    /* ブログページスタイル */
     .blog-page-title {
         font-size: 1.8rem;
     }
-    
+
     .blog-post-content {
         padding: 20px;
     }
-    
+
     .blog-nav ul {
         gap: 10px;
     }
-    
+
     .blog-nav-link {
         font-size: 0.85rem;
         padding: 5px 8px;
+    }
+}
+
+/* より細い画面での追加調整 */
+@media (max-width: 600px) {
+    :root {
+        --header-height: 140px; /* 中間サイズでのヘッダー高さ */
+    }
+
+    .container {
+        padding: 0 15px;
+    }
+
+    header {
+        padding: 12px 0;
+    }
+
+    header h1 {
+        font-size: 1.6rem;
+    }
+
+    nav ul {
+        gap: 12px;
+    }
+
+    nav a,
+    nav .nav-link {
+        font-size: 0.85rem;
+        padding: 4px 8px;
+    }
+
+    .dropdown-menu {
+        min-width: 160px;
+        margin-top: 6px;
+    }
+
+    .dropdown-item {
+        padding: 9px 14px;
+        font-size: 0.8rem;
+    }
+
+    /* ヒーローセクション調整 */
+    #hero {
+        padding: calc(var(--header-height) + 50px) 0 70px;
+    }
+}
+
+/* 非常に小さな画面での調整 */
+@media (max-width: 480px) {
+    :root {
+        --header-height: 160px; /* 非常に小さな画面でのヘッダー高さ */
+    }
+
+    .container {
+        padding: 0 12px;
+    }
+
+    header {
+        padding: 10px 0;
+    }
+
+    header h1 {
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+    }
+
+    nav ul {
+        gap: 8px;
+        justify-content: center;
+    }
+
+    nav a,
+    nav .nav-link {
+        font-size: 0.8rem;
+        padding: 3px 6px;
+        white-space: nowrap;
+    }
+
+    .dropdown-trigger {
+        gap: 4px;
+    }
+
+    .dropdown-icon {
+        font-size: 0.7rem;
+    }
+
+    .dropdown-menu {
+        min-width: 140px;
+        margin-top: 4px;
+        padding: 6px 0;
+    }
+
+    .dropdown-item {
+        padding: 8px 12px;
+        font-size: 0.75rem;
+        gap: 8px;
+    }
+
+    .dropdown-item i {
+        font-size: 0.7rem;
+        width: 14px;
+    }
+
+    /* ヒーローセクション調整 */
+    #hero {
+        padding: calc(var(--header-height) + 40px) 0 60px;
+    }
+
+    .hero-content h2 {
+        font-size: 1.75rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
+
+/* 極小画面での調整 */
+@media (max-width: 360px) {
+    :root {
+        --header-height: 180px; /* 極小画面でのヘッダー高さ */
+    }
+
+    header h1 {
+        font-size: 1.2rem;
+    }
+
+    nav ul {
+        gap: 6px;
+    }
+
+    nav a,
+    nav .nav-link {
+        font-size: 0.75rem;
+        padding: 2px 4px;
+    }
+
+    .dropdown-menu {
+        min-width: 120px;
+        left: 0;
+        transform: translateX(0);
+    }
+
+    .dropdown-menu::before {
+        left: 20px;
+        transform: translateX(0) rotate(45deg);
+    }
+
+    .nav-item-dropdown:hover .dropdown-menu,
+    .dropdown-menu.dropdown-open {
+        transform: translateX(0) translateY(0);
+    }
+
+    .dropdown-item {
+        padding: 6px 10px;
+        font-size: 0.7rem;
+    }
+
+    /* ヒーローセクション調整 */
+    #hero {
+        padding: calc(var(--header-height) + 30px) 0 50px;
+    }
+
+    .hero-content h2 {
+        font-size: 1.5rem;
+    }
+
+    .hero-content p {
+        font-size: 0.9rem;
     }
 }

@@ -4,14 +4,29 @@ import { useCallback, useEffect } from 'react';
 
 export const useSlideNavigation = () => {
   const updateActiveNavLink = useCallback((activeId: string) => {
+    // Remove 'nav-active' class from all navigation links
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach((link) => {
       link.classList.remove('nav-active');
     });
-    
-    const activeLink = document.querySelector(`nav a[href="#${activeId}"]`);
-    if (activeLink) {
-      activeLink.classList.add('nav-active');
+
+    // Also remove 'nav-active' class from dropdown trigger
+    const blogDropdownTrigger = document.querySelector('nav .dropdown-trigger');
+    if (blogDropdownTrigger) {
+      blogDropdownTrigger.classList.remove('nav-active');
+    }
+
+    // Special case for blog section - highlight the dropdown trigger instead of the dropdown item
+    if (activeId === 'blog') {
+      const blogDropdownTrigger = document.querySelector('nav .dropdown-trigger');
+      if (blogDropdownTrigger) {
+        blogDropdownTrigger.classList.add('nav-active');
+      }
+    } else {
+      const activeLink = document.querySelector(`nav a[href="#${activeId}"]`);
+      if (activeLink) {
+        activeLink.classList.add('nav-active');
+      }
     }
   }, []);
 
@@ -27,7 +42,7 @@ export const useSlideNavigation = () => {
 
     // スライドエフェクトを追加
     document.body.classList.add('slide-transition-active');
-    
+
     // フェードアウト効果
     const sections = document.querySelectorAll('.section');
     sections.forEach((section) => {
@@ -37,12 +52,12 @@ export const useSlideNavigation = () => {
     // 遅延後にスクロールとフェードイン
     setTimeout(() => {
       window.scrollTo(scrollOptions);
-      
+
       setTimeout(() => {
         sections.forEach((section) => {
           (section as HTMLElement).classList.remove('slide-transition');
         });
-        
+
         document.body.classList.remove('slide-transition-active');
       }, 300);
     }, 200);

@@ -2,6 +2,7 @@
 
 import Section from './common/Section';
 import { useBlogPosts } from '../hooks/useBlogPosts';
+import { useRouter } from 'next/navigation';
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -18,6 +19,7 @@ function stripHtml(html: string): string {
 
 export default function Blog() {
   const { posts, loading, error } = useBlogPosts();
+  const router = useRouter();
 
   if (loading) {
     return (
@@ -33,7 +35,7 @@ export default function Blog() {
 
   if (error) {
     const wordpressUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'http://localhost:8080';
-    
+
     return (
       <Section id="blog" title="ブログの更新記事">
         <div className="blog-content">
@@ -66,6 +68,15 @@ export default function Blog() {
   return (
     <Section id="blog" title="ブログの更新記事">
       <div className="blog-content">
+        <div className="view-all-posts">
+          <button 
+            className="view-all-button"
+            onClick={() => router.push('/blog')}
+          >
+            <span>すべての記事を見る</span>
+            <i className="fas fa-arrow-right"></i>
+          </button>
+        </div>
         <div className="blog-grid">
           {posts.map((post) => (
             <article key={post.id} className="blog-card">

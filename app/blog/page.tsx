@@ -37,7 +37,7 @@ export default function BlogPage() {
 
   if (error) {
     const wordpressUrl = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || 'http://localhost:8080';
-    
+
     return (
       <div className="blog-page">
         <div className="container">
@@ -135,7 +135,7 @@ export default function BlogPage() {
                       rel="noopener noreferrer" 
                       className="blog-read-more"
                     >
-                      続きを読む
+                      <span>続きを読む</span>
                       <i className="fas fa-arrow-right"></i>
                     </a>
                   </div>

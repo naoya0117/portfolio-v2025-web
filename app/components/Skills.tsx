@@ -9,7 +9,7 @@ export default function Skills() {
           <div className="main-skills-grid">
             <div className="main-skill-card">
               <h4>Linux</h4>
-              <p>学部1年生の冬からシェルに興味を持ち自分のメインPCにインスト−ル。開発環境やデスクトップ環境をいじりながら、シェル操作や設定ファイルの基礎を学んだ。ArchLinuxを愛用している。</p>
+              <p>学部1年生の冬からシェルに興味を持ち自分のメインPCにインストール。開発環境やデスクトップ環境をいじりながら、シェル操作や設定ファイルの基礎を学んだ。ArchLinuxを愛用。</p>
             </div>
             <div className="main-skill-card">
               <h4>Docker</h4>

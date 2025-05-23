@@ -1025,34 +1025,66 @@ footer .container {
     
     /* モバイルでのドロップダウンメニュー */
     .nav-item-dropdown {
-        position: static;
+        position: relative;
     }
     
     .dropdown-menu {
-        position: static;
-        transform: none;
-        box-shadow: none;
-        border: none;
-        background-color: var(--light-gray);
-        border-radius: 6px;
-        margin: 8px 0 0 0;
-        padding: 6px 0;
-        min-width: auto;
-        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--light-gray);
+        min-width: 180px;
+        padding: 8px 0;
+        margin-top: 8px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateX(-50%) translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 1100;
     }
     
     .dropdown-menu::before {
-        display: none;
+        content: '';
+        position: absolute;
+        top: -6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 12px;
+        height: 12px;
+        background-color: white;
+        border: 1px solid var(--light-gray);
+        border-bottom: none;
+        border-right: none;
+        transform: translateX(-50%) rotate(45deg);
     }
     
     .nav-item-dropdown:hover .dropdown-menu,
     .nav-item-dropdown:focus-within .dropdown-menu {
-        transform: none;
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
     }
     
     .dropdown-item {
-        padding: 8px 16px;
+        padding: 10px 16px;
         font-size: 0.85rem;
+    }
+    
+    /* 非常に小さな画面での調整 */
+    @media (max-width: 480px) {
+        .dropdown-menu {
+            min-width: 160px;
+            margin-top: 6px;
+        }
+        
+        .dropdown-item {
+            padding: 8px 14px;
+            font-size: 0.8rem;
+        }
     }
     
     .hero-content h2 {

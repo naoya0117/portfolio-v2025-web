@@ -76,6 +76,14 @@ export default function Header() {
                 href="#blog" 
                 onClick={(e) => handleNavClick(e, 'blog')}
                 className="nav-link dropdown-trigger"
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    handleNavClick(e as any, 'blog');
+                  }
+                }}
               >
                 ブログ
                 <i className="fas fa-chevron-down dropdown-icon"></i>

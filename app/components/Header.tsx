@@ -1,15 +1,30 @@
 'use client';
 
 import { useSlideNavigation } from '../hooks/useSlideNavigation';
+import { useHeaderHeight } from '../hooks/useHeaderHeight';
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
+// ヘッダーの高さを保持するグローバル変数
+let currentHeaderHeight = 0;
+
+// ヘッダーの高さを取得する関数
+export function getHeaderHeight() {
+  return currentHeaderHeight;
+}
+
 export default function Header() {
   const { slideToSection } = useSlideNavigation();
+  const { headerRef, headerHeight } = useHeaderHeight();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLLIElement>(null);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const router = useRouter();
+
+  // ヘッダーの高さが変わったらグローバル変数を更新
+  useEffect(() => {
+    currentHeaderHeight = headerHeight;
+  }, [headerHeight]);
 
   // タッチデバイスの検出
   useEffect(() => {
@@ -131,7 +146,7 @@ export default function Header() {
   }, [isTouchDevice, isDropdownOpen]);
 
   return (
-    <header>
+    <header ref={headerRef}>
       <div className="container">
         <div className="header-content">
           <div className="portfolio-brand">

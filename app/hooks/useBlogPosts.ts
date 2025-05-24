@@ -36,6 +36,8 @@ interface UseBlogPostsReturn {
   posts: BlogPost[];
   loading: boolean;
   error: string | null;
+  totalPages: number;
+  totalPosts: number;
 }
 
 interface UseBlogPostReturn {
@@ -50,34 +52,42 @@ function getWordPressApiUrl(): string {
   return baseUrl.replace(/\/$/, '');
 }
 
-export function useBlogPosts(limit?: number): UseBlogPostsReturn {
+export function useBlogPosts(page: number = 1, limit: number = 10): UseBlogPostsReturn {
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalPosts, setTotalPosts] = useState(0);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         setLoading(true);
         setError(null);
-        
+
         const wordpressApiUrl = getWordPressApiUrl();
-        let apiEndpoint = `${wordpressApiUrl}/wp-json/wp/v2/posts?_embed&orderby=date&order=desc`;
-        
-        if (limit) {
-          apiEndpoint += `&per_page=${limit}`;
-        } else {
-          apiEndpoint += `&per_page=10`;
-        }
-        
+        const apiEndpoint = `${wordpressApiUrl}/wp-json/wp/v2/posts?_embed&orderby=date&order=desc&page=${page}&per_page=${limit}`;
+
         console.log('Fetching posts from:', apiEndpoint);
-        
+
         const response = await fetch(apiEndpoint);
-        
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
         }
-        
+
+        // Extract pagination information from headers
+        const totalPostsHeader = response.headers.get('X-WP-Total');
+        const totalPagesHeader = response.headers.get('X-WP-TotalPages');
+
+        if (totalPostsHeader) {
+          setTotalPosts(parseInt(totalPostsHeader, 10));
+        }
+
+        if (totalPagesHeader) {
+          setTotalPages(parseInt(totalPagesHeader, 10));
+        }
+
         const data: BlogPost[] = await response.json();
         setPosts(data);
       } catch (err) {
@@ -90,9 +100,9 @@ export function useBlogPosts(limit?: number): UseBlogPostsReturn {
     };
 
     fetchPosts();
-  }, [limit]);
+  }, [page, limit]);
 
-  return { posts, loading, error };
+  return { posts, loading, error, totalPages, totalPosts };
 }
 
 export function useBlogPost(slug: string): UseBlogPostReturn {
@@ -110,12 +120,12 @@ export function useBlogPost(slug: string): UseBlogPostReturn {
       try {
         setLoading(true);
         setError(null);
-        
+
         const wordpressApiUrl = getWordPressApiUrl();
         const apiEndpoint = `${wordpressApiUrl}/wp-json/wp/v2/posts?slug=${slug}&_embed=1`;
-        
+
         console.log('Fetching post from:', apiEndpoint);
-        
+
         const response = await fetch(apiEndpoint);
 
         if (!response.ok) {
@@ -123,7 +133,7 @@ export function useBlogPost(slug: string): UseBlogPostReturn {
         }
 
         const data: BlogPost[] = await response.json();
-        
+
         if (Array.isArray(data) && data.length > 0) {
           setPost(data[0]);
         } else {

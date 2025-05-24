@@ -462,8 +462,9 @@ nav .nav-link,
 #hero {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
-    padding: calc(var(--header-height) + 70px) 0 100px;
+    padding: 70px 0 100px;
     text-align: center;
+    /* margin-topはJavaScriptで動的に設定されるため削除 */
 }
 
 .hero-content h2 {

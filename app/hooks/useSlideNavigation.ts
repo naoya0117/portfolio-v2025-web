@@ -34,9 +34,13 @@ export const useSlideNavigation = () => {
     const targetElement = document.getElementById(targetId);
     if (!targetElement) return;
 
+    // ヘッダーの高さを動的に取得
+    const headerElement = document.querySelector('header');
+    const headerHeight = headerElement ? headerElement.getBoundingClientRect().height : 80;
+
     // スムーズスクロールの設定
     const scrollOptions: ScrollToOptions = {
-      top: targetElement.offsetTop - 80, // ヘッダーの高さを考慮
+      top: targetElement.offsetTop - headerHeight, // 動的に計算されたヘッダーの高さを考慮
       behavior: 'smooth'
     };
 
@@ -70,7 +74,11 @@ export const useSlideNavigation = () => {
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['about', 'background', 'skills', 'team-projects', 'personal-projects', 'work-experience', 'blog', 'contact'];
-      const scrollPosition = window.scrollY + 100; // ヘッダーのオフセット
+
+      // ヘッダーの高さを動的に取得
+      const headerElement = document.querySelector('header');
+      const headerHeight = headerElement ? headerElement.getBoundingClientRect().height : 100;
+      const scrollPosition = window.scrollY + headerHeight + 20; // ヘッダーの高さ + 余白
 
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i]);

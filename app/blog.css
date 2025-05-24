@@ -398,11 +398,6 @@ body {
     transform: scale(1.02);
 }
 
-.read-more::after {
-    content: "→";
-    transition: transform 0.2s ease;
-}
-
 .read-more:hover::after {
     transform: translateX(2px);
 }

@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useBlogPosts } from '../hooks/useBlogPosts';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 function formatDate(dateString: string): string {
   const date = new Date(dateString);
@@ -34,7 +34,9 @@ function getCategoryEmoji(category: string): string {
 }
 
 export default function BlogPage() {
-  const { posts, loading, error } = useBlogPosts();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [postsPerPage] = useState<number>(10);
+  const { posts, loading, error, totalPages } = useBlogPosts(currentPage, postsPerPage);
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [activeFilter, setActiveFilter] = useState('すべて');
@@ -54,6 +56,11 @@ export default function BlogPage() {
 
     return searchMatch && categoryMatch;
   });
+
+  // Reset to page 1 when search or filter changes
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, activeFilter]);
 
   if (loading) {
     return (
@@ -206,72 +213,149 @@ export default function BlogPage() {
       </section>
 
       <section className="blog-grid" role="main" aria-label="ブログ記事一覧">
-        {filteredPosts.map((post) => {
-          // カテゴリ名を取得
-          const category = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'その他';
-          const emoji = getCategoryEmoji(category);
+        {(() => {
+          // Calculate which posts to display based on current page
+          const isFiltered = searchTerm !== '' || activeFilter !== 'すべて';
 
-          return (
-            <article 
-              key={post.id} 
-              className="article-card" 
-              tabIndex={0} 
-              role="article"
-              onClick={() => router.push(`/blog/${post.slug}`)}
-              style={{ cursor: 'pointer' }}
-            >
-              <div className="article-image">
-                {post._embedded?.['wp:featuredmedia']?.[0] ? (
-                  <Image 
-                    src={post._embedded['wp:featuredmedia'][0].source_url} 
-                    alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          // If filtering is applied, paginate the filtered posts
+          // Otherwise, display all posts from the current API page
+          const displayPosts = isFiltered
+            ? (() => {
+                const startIndex = (currentPage - 1) * postsPerPage;
+                const endIndex = startIndex + postsPerPage;
+                return filteredPosts.slice(startIndex, endIndex);
+              })()
+            : filteredPosts;
+
+          return displayPosts.map((post) => {
+            // カテゴリ名を取得
+            const category = post._embedded?.['wp:term']?.[0]?.[0]?.name || 'その他';
+            const emoji = getCategoryEmoji(category);
+
+            return (
+              <article 
+                key={post.id} 
+                className="article-card" 
+                tabIndex={0} 
+                role="article"
+                onClick={() => router.push(`/blog/${post.slug}`)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="article-image">
+                  {post._embedded?.['wp:featuredmedia']?.[0] ? (
+                    <Image 
+                      src={post._embedded['wp:featuredmedia'][0].source_url} 
+                      alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <span className="article-emoji">{emoji}</span>
+                  )}
+                </div>
+                <div className="article-content">
+                  <div className="article-meta">
+                    <time className="article-date" dateTime={post.date}>{formatDate(post.date)}</time>
+                    <span className="article-category">{category}</span>
+                  </div>
+                  <h2 
+                    className="article-title"
+                    dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                   />
-                ) : (
-                  <span className="article-emoji">{emoji}</span>
-                )}
-              </div>
-              <div className="article-content">
-                <div className="article-meta">
-                  <time className="article-date" dateTime={post.date}>{formatDate(post.date)}</time>
-                  <span className="article-category">{category}</span>
+                  <p className="article-excerpt">
+                    {stripHtml(post.excerpt.rendered).substring(0, 150)}
+                    {stripHtml(post.excerpt.rendered).length > 150 ? '...' : ''}
+                  </p>
+                  <div className="article-tags">
+                    {post._embedded?.['wp:term']?.[1]?.map(tag => (
+                      <span key={tag.id} className="article-tag">{tag.name}</span>
+                    ))}
+                  </div>
+                  <button
+                    className="read-more"
+                    aria-label={`${post.title.rendered}の記事を読む`}
+                  >
+                    続きを読む
+                  </button>
                 </div>
-                <h2 
-                  className="article-title"
-                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-                />
-                <p className="article-excerpt">
-                  {stripHtml(post.excerpt.rendered).substring(0, 150)}
-                  {stripHtml(post.excerpt.rendered).length > 150 ? '...' : ''}
-                </p>
-                <div className="article-tags">
-                  {post._embedded?.['wp:term']?.[1]?.map(tag => (
-                    <span key={tag.id} className="article-tag">{tag.name}</span>
-                  ))}
-                </div>
-                <button
-                  className="read-more"
-                  aria-label={`${post.title.rendered}の記事を読む`}
-                >
-                  続きを読む
-                </button>
-              </div>
-            </article>
-          );
-        })}
+              </article>
+            );
+          });
+        })()}
       </section>
 
       {filteredPosts.length > 0 && (
         <nav className="pagination" aria-label="ページネーション">
-          <button className="page-btn active" aria-current="page" aria-label="現在のページ, 1">1</button>
-          <button className="page-btn" aria-label="2ページ目へ">2</button>
-          <button className="page-btn" aria-label="3ページ目へ">3</button>
-          {/* Only show the "next" button when there are more pages */}
-          {filteredPosts.length > 10 && (
-            <button className="page-btn" aria-label="次のページへ">次へ</button>
-          )}
+          {/* Calculate effective total pages based on whether filtering is applied */}
+          {(() => {
+            // If no filtering or search is applied, use the API's totalPages
+            // Otherwise, calculate based on filtered posts
+            const isFiltered = searchTerm !== '' || activeFilter !== 'すべて';
+            const effectiveTotalPages = isFiltered 
+              ? Math.ceil(filteredPosts.length / postsPerPage)
+              : totalPages;
+
+            // Ensure current page is valid
+            const effectiveCurrentPage = Math.min(currentPage, effectiveTotalPages || 1);
+
+            if (effectiveTotalPages === 0) return null;
+
+            return (
+              <>
+                {/* Previous page button */}
+                {effectiveCurrentPage > 1 && (
+                  <button 
+                    className="page-btn" 
+                    aria-label="前のページへ"
+                    onClick={() => setCurrentPage(effectiveCurrentPage - 1)}
+                  >
+                    前へ
+                  </button>
+                )}
+
+                {/* Generate page buttons dynamically */}
+                {Array.from({ length: effectiveTotalPages }, (_, i) => i + 1)
+                  .filter(pageNum => {
+                    // Show first page, last page, current page, and pages around current page
+                    return pageNum === 1 || 
+                           pageNum === effectiveTotalPages || 
+                           (pageNum >= effectiveCurrentPage - 1 && pageNum <= effectiveCurrentPage + 1);
+                  })
+                  .map((pageNum, index, array) => {
+                    // Add ellipsis if there are gaps in the sequence
+                    const showEllipsisBefore = index > 0 && pageNum > array[index - 1] + 1;
+                    const showEllipsisAfter = index < array.length - 1 && pageNum < array[index + 1] - 1;
+
+                    return (
+                      <React.Fragment key={pageNum}>
+                        {showEllipsisBefore && <span className="page-ellipsis">...</span>}
+                        <button 
+                          className={`page-btn ${effectiveCurrentPage === pageNum ? 'active' : ''}`} 
+                          aria-current={effectiveCurrentPage === pageNum ? 'page' : undefined}
+                          aria-label={`${pageNum}ページ目へ`}
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </button>
+                        {showEllipsisAfter && <span className="page-ellipsis">...</span>}
+                      </React.Fragment>
+                    );
+                  })}
+
+                {/* Next page button */}
+                {effectiveCurrentPage < effectiveTotalPages && (
+                  <button 
+                    className="page-btn" 
+                    aria-label="次のページへ"
+                    onClick={() => setCurrentPage(effectiveCurrentPage + 1)}
+                  >
+                    次へ
+                  </button>
+                )}
+              </>
+            );
+          })()}
         </nav>
       )}
     </div>

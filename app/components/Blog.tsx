@@ -80,7 +80,12 @@ export default function Blog() {
         </div>
         <div className="blog-grid">
           {posts.map((post) => (
-            <article key={post.id} className="blog-card">
+            <article 
+              key={post.id} 
+              className="blog-card"
+              onClick={() => router.push(`/blog/${post.slug}`)}
+              style={{ cursor: 'pointer' }}
+            >
               {post._embedded?.['wp:featuredmedia']?.[0] && (
                 <div className="blog-image">
                   <Image 
@@ -98,8 +103,7 @@ export default function Blog() {
                   <time className="blog-date">{formatDate(post.date)}</time>
                 </div>
                 <h3 className="blog-title">
-                  <button
-                    onClick={() => router.push(`/blog/${post.slug}`)}
+                  <span
                     className="text-left w-full hover:text-blue-600 transition-colors"
                     dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                   />
@@ -109,13 +113,10 @@ export default function Blog() {
                   {stripHtml(post.excerpt.rendered).length > 150 ? '...' : ''}
                 </div>
                 <div className="blog-link">
-                  <button
-                    onClick={() => router.push(`/blog/${post.slug}`)}
-                    className="read-more"
-                  >
+                  <span className="read-more">
                     続きを読む
                     <i className="fas fa-arrow-right"></i>
-                  </button>
+                  </span>
                 </div>
               </div>
             </article>

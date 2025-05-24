@@ -30,13 +30,26 @@ export default function BlogHeader() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Check if we're on the blog page
+  const isBlogPage = () => {
+    if (typeof window !== 'undefined') {
+      return window.location.pathname === '/blog' || window.location.pathname === '/blog/';
+    }
+    return false;
+  };
+
   return (
     <header className="header">
       <div className="nav-container">
         <a href="#" className="logo" onClick={(e) => {
           e.preventDefault();
-          router.push('/blog');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (isBlogPage()) {
+            // If already on blog page, just scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            // Otherwise navigate to blog page
+            router.push('/blog');
+          }
         }}>
           <span className="logo-main">Naoya&apos;s</span>
           <span className="logo-sub">Blog</span>
@@ -66,58 +79,6 @@ export default function BlogHeader() {
                 }}
               >
                 ホーム
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#" 
-                className="nav-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/blog?category=tech');
-                  setIsMenuOpen(false);
-                }}
-              >
-                技術記事
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#" 
-                className="nav-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/blog?category=learning');
-                  setIsMenuOpen(false);
-                }}
-              >
-                学習記録
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#" 
-                className="nav-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/blog?category=project');
-                  setIsMenuOpen(false);
-                }}
-              >
-                プロジェクト
-              </a>
-            </li>
-            <li>
-              <a 
-                href="#" 
-                className="nav-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/about');
-                  setIsMenuOpen(false);
-                }}
-              >
-                について
               </a>
             </li>
             <li>

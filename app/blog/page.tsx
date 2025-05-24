@@ -66,7 +66,6 @@ export default function BlogPage() {
         <section className="search-filter">
           <div className="search-bar">
             <input type="text" className="search-input" placeholder="記事を検索..." aria-label="記事を検索" disabled />
-            <button className="search-btn" aria-label="検索実行" disabled>検索</button>
           </div>
           <div className="filter-tags" role="tablist" aria-label="記事フィルター">
             <button className="tag active" role="tab" aria-selected="true">すべて</button>
@@ -190,16 +189,6 @@ export default function BlogPage() {
             value={searchTerm || ''}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button 
-            className="search-btn" 
-            aria-label="検索実行"
-            onClick={() => {
-              // 検索は即時反映されるので、このボタンは主に視覚的な目的
-              console.log(`Searching for: ${searchTerm}`);
-            }}
-          >
-            検索
-          </button>
         </div>
         <div className="filter-tags" role="tablist" aria-label="記事フィルター">
           {categories.map(category => (
@@ -223,7 +212,14 @@ export default function BlogPage() {
           const emoji = getCategoryEmoji(category);
 
           return (
-            <article key={post.id} className="article-card" tabIndex={0} role="article">
+            <article 
+              key={post.id} 
+              className="article-card" 
+              tabIndex={0} 
+              role="article"
+              onClick={() => router.push(`/blog/${post.slug}`)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="article-image">
                 {post._embedded?.['wp:featuredmedia']?.[0] ? (
                   <Image 
@@ -256,7 +252,6 @@ export default function BlogPage() {
                   ))}
                 </div>
                 <button
-                  onClick={() => router.push(`/blog/${post.slug}`)}
                   className="read-more"
                   aria-label={`${post.title.rendered}の記事を読む`}
                 >

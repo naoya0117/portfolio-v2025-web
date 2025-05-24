@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Section from './common/Section';
 import { useBlogPosts } from '../hooks/useBlogPosts';
 import { useRouter } from 'next/navigation';
@@ -82,10 +83,13 @@ export default function Blog() {
             <article key={post.id} className="blog-card">
               {post._embedded?.['wp:featuredmedia']?.[0] && (
                 <div className="blog-image">
-                  <img 
+                  <Image 
                     src={post._embedded['wp:featuredmedia'][0].source_url} 
                     alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
+                    width={400}
+                    height={225}
                     className="blog-thumbnail"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 </div>
               )}
@@ -94,19 +98,24 @@ export default function Blog() {
                   <time className="blog-date">{formatDate(post.date)}</time>
                 </div>
                 <h3 className="blog-title">
-                  <a href={post.link} target="_blank" rel="noopener noreferrer">
-                    {post.title.rendered}
-                  </a>
+                  <button
+                    onClick={() => router.push(`/blog/${post.slug}`)}
+                    className="text-left w-full hover:text-blue-600 transition-colors"
+                    dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+                  />
                 </h3>
                 <div className="blog-excerpt">
                   {stripHtml(post.excerpt.rendered).substring(0, 150)}
                   {stripHtml(post.excerpt.rendered).length > 150 ? '...' : ''}
                 </div>
                 <div className="blog-link">
-                  <a href={post.link} target="_blank" rel="noopener noreferrer" className="read-more">
+                  <button
+                    onClick={() => router.push(`/blog/${post.slug}`)}
+                    className="read-more"
+                  >
                     続きを読む
-                    <i className="fas fa-external-link-alt"></i>
-                  </a>
+                    <i className="fas fa-arrow-right"></i>
+                  </button>
                 </div>
               </div>
             </article>

@@ -1,119 +1,136 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function BlogHeader() {
   const router = useRouter();
-  // モバイルでのタッチアクティブ状態の管理
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // Close mobile menu when clicking outside
   useEffect(() => {
-    const handleTouchStart = (e: TouchEvent) => {
-      const target = e.target as HTMLElement;
-      const navElement = target.closest('.blog-nav-link') || target.closest('.blog-home-link');
+    const handleClickOutside = (event: MouseEvent) => {
+      const menu = document.getElementById('mobile-menu');
+      const menuButton = document.querySelector('.menu-toggle');
 
-      if (navElement) {
-        navElement.classList.add('active-touch');
+      if (menu && !menu.contains(event.target as Node) && 
+          menuButton && !menuButton.contains(event.target as Node)) {
+        setIsMenuOpen(false);
       }
     };
 
-    const handleTouchEnd = (e: TouchEvent) => {
-      const target = e.target as HTMLElement;
-      const navElement = target.closest('.blog-nav-link') || target.closest('.blog-home-link');
-
-      if (navElement) {
-        // 少し遅延させてアクティブ状態を解除
-        setTimeout(() => {
-          navElement.classList.remove('active-touch');
-        }, 150);
-      }
-    };
-
-    const handleTouchCancel = (e: TouchEvent) => {
-      const target = e.target as HTMLElement;
-      const navElement = target.closest('.blog-nav-link') || target.closest('.blog-home-link');
-
-      if (navElement) {
-        navElement.classList.remove('active-touch');
-      }
-    };
-
-    // タッチイベントリスナーを追加
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchend', handleTouchEnd);
-    document.addEventListener('touchcancel', handleTouchCancel);
-
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener('touchstart', handleTouchStart);
-      document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('touchcancel', handleTouchCancel);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   return (
-    <header className="blog-header">
-      <div className="container">
-        <div className="blog-header-content">
-          <div className="blog-brand">
-            <a 
-              href="#top" 
-              onClick={(e) => {
-                e.preventDefault();
-                // ページトップにスムーススクロール
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                });
-              }}
-              className="blog-home-link"
-            >
-              <span className="blog-logo">Naoya&#39;s</span>
-              <span className="blog-title">Tech Blog</span>
-            </a>
-          </div>
-          <nav className="blog-nav">
-            <ul>
-              <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push('/blog');
-                  }}
-                  className="blog-nav-link active"
-                >
-                  <i className="fas fa-blog"></i>
-                  記事一覧
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push('/');
-                  }}
-                  className="blog-nav-link"
-                >
-                  <i className="fas fa-user-circle"></i>
-                  ポートフォリオ
-                </a>
-              </li>
-              <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push('/#contact');
-                  }}
-                  className="blog-nav-link"
-                >
-                  <i className="fas fa-envelope"></i>
-                  連絡先
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+    <header className="header">
+      <div className="nav-container">
+        <a href="#" className="logo" onClick={(e) => {
+          e.preventDefault();
+          router.push('/blog');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}>
+          <span className="logo-main">Naoya&apos;s</span>
+          <span className="logo-sub">Blog</span>
+        </a>
+
+        <button 
+          className={`menu-toggle ${isMenuOpen ? 'active' : ''}`} 
+          aria-label={isMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
+          aria-expanded={isMenuOpen}
+          onClick={toggleMenu}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav>
+          <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
+            <li>
+              <a 
+                href="#" 
+                className="nav-link active"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/blog');
+                  setIsMenuOpen(false);
+                }}
+              >
+                ホーム
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#" 
+                className="nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/blog?category=tech');
+                  setIsMenuOpen(false);
+                }}
+              >
+                技術記事
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#" 
+                className="nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/blog?category=learning');
+                  setIsMenuOpen(false);
+                }}
+              >
+                学習記録
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#" 
+                className="nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/blog?category=project');
+                  setIsMenuOpen(false);
+                }}
+              >
+                プロジェクト
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#" 
+                className="nav-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/about');
+                  setIsMenuOpen(false);
+                }}
+              >
+                について
+              </a>
+            </li>
+            <li>
+              <Link 
+                href="/" 
+                className="nav-link"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                ポートフォリオ
+              </Link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </header>
   );

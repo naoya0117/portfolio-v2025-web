@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import BlogHeader from '../components/BlogHeader';
-import Footer from '../components/Footer';
+import BlogFooter from '../components/BlogFooter';
+import '../blog.css';
 
 export const metadata: Metadata = {
   icons: '/favicon.ico',
@@ -14,12 +15,12 @@ export default function BlogLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <BlogHeader />
-      <main className="blog-main">
+      <main className="main-content">
         {children}
       </main>
-      <Footer />
-    </>
+      <BlogFooter />
+    </div>
   );
 }

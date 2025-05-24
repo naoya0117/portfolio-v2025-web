@@ -131,30 +131,7 @@ export default function BlogPostPage() {
       <BlogHeader />
 
       <main className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          {/* Breadcrumb Navigation */}
-          <nav className="flex items-center space-x-2 text-sm text-slate-600 mb-8">
-            <button
-              onClick={() => router.push('/')}
-              className="hover:text-blue-600 transition-colors duration-200 px-2 py-1 rounded-lg hover:bg-white/50"
-            >
-              ホーム
-            </button>
-            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <button
-              onClick={() => router.push('/blog')}
-              className="hover:text-blue-600 transition-colors duration-200 px-2 py-1 rounded-lg hover:bg-white/50"
-            >
-              ブログ
-            </button>
-            <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-            <span className="text-slate-900 font-medium bg-white/50 px-2 py-1 rounded-lg">記事</span>
-          </nav>
-
+        <div className="mx-auto">
           <BlogPost slug={slug} />
         </div>
       </main>

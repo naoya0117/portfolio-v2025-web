@@ -8,7 +8,7 @@ import { useState, useEffect, useRef, RefObject } from 'react';
  * @returns {Object} headerRef - ヘッダー要素に付与するref, headerHeight - ヘッダーの高さ(px)
  */
 export function useHeaderHeight(): {
-  headerRef: RefObject<HTMLElement>;
+  headerRef: RefObject<HTMLElement | null>;
   headerHeight: number;
 } {
   const headerRef = useRef<HTMLElement>(null);

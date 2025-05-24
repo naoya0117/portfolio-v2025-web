@@ -5,7 +5,7 @@ import { useCallback, useEffect } from 'react';
 export const useSlideNavigation = () => {
   const updateActiveNavLink = useCallback((activeId: string) => {
     // Remove 'nav-active' class from all navigation links
-    const navLinks = document.querySelectorAll('nav a');
+    const navLinks = document.querySelectorAll('nav a, nav .nav-link');
     navLinks.forEach((link) => {
       link.classList.remove('nav-active');
     });
@@ -23,7 +23,7 @@ export const useSlideNavigation = () => {
         blogDropdownTrigger.classList.add('nav-active');
       }
     } else {
-      const activeLink = document.querySelector(`nav a[href="#${activeId}"]`);
+      const activeLink = document.querySelector(`nav a[href="#${activeId}"], nav .nav-link[href="#${activeId}"]`);
       if (activeLink) {
         activeLink.classList.add('nav-active');
       }

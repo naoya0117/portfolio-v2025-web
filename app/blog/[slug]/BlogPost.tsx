@@ -84,6 +84,10 @@ interface RelatedPost {
     rendered: string;
   };
   date: string;
+  excerpt?: {
+    rendered: string;
+    protected: boolean;
+  };
   _embedded?: {
     'wp:term'?: Array<Array<{
       id: number;

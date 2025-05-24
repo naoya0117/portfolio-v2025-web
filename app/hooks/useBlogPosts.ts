@@ -26,6 +26,7 @@ interface BlogPost {
       avatar_urls: { [key: string]: string };
     }>;
     'wp:term'?: Array<Array<{
+      id: number;
       name: string;
       slug: string;
     }>>;

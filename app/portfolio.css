@@ -267,7 +267,7 @@ nav .nav-link,
 
 /* ホバー機能を持つデバイスでのみhover効果を有効化 */
 @media (hover: hover) {
-    .dropdown-trigger:hover::after {
+    .dropdown-triggr:hover::after {
         width: 100%;
     }
 }
@@ -464,7 +464,7 @@ nav .nav-link,
     color: white;
     padding: 70px 0 100px;
     text-align: center;
-    /* margin-topはJavaScriptで動的に設定されるため削除 */
+    margin-top: var(--header-height); /* ヘッダーの高さに基づいてマージンを設定 */
 }
 
 .hero-content h2 {
@@ -1263,8 +1263,11 @@ nav .nav-link,
     border-color: var(--accent-color);
 }
 
-/* フッター */
-/* Note: Footer styles are now imported from blog.css */
+@media (max-width: 880px) {
+    :root {
+        --header-height: 140px; /* モバイルでのヘッダー高さ */
+    }
+}
 
 /* レスポンシブスタイル */
 @media (max-width: 768px) {

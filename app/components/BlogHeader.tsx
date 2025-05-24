@@ -1,34 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 export default function BlogHeader() {
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Close mobile menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const menu = document.getElementById('mobile-menu');
-      const menuButton = document.querySelector('.menu-toggle');
-
-      if (menu && !menu.contains(event.target as Node) && 
-          menuButton && !menuButton.contains(event.target as Node)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [isMobile, setIsMobile] = useState(false);
 
   // Check if we're on the blog page
   const isBlogPage = () => {
@@ -37,6 +15,24 @@ export default function BlogHeader() {
     }
     return false;
   };
+
+  // Check if the device is mobile
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    // Initial check
+    checkIfMobile();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', checkIfMobile);
+    };
+  }, []);
 
   return (
     <header className="header">
@@ -55,37 +51,27 @@ export default function BlogHeader() {
           <span className="logo-sub">Blog</span>
         </a>
 
-        <button 
-          className={`menu-toggle ${isMenuOpen ? 'active' : ''}`} 
-          aria-label={isMenuOpen ? 'メニューを閉じる' : 'メニューを開く'}
-          aria-expanded={isMenuOpen}
-          onClick={toggleMenu}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
         <nav>
-          <ul className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-            <li>
-              <a 
-                href="#" 
-                className="nav-link active"
-                onClick={(e) => {
-                  e.preventDefault();
-                  router.push('/blog');
-                  setIsMenuOpen(false);
-                }}
-              >
-                ホーム
-              </a>
-            </li>
+          <ul className="nav-menu active">
+            {/* Only show home button on non-mobile devices */}
+            {!isMobile && (
+              <li>
+                <a 
+                  href="#" 
+                  className="nav-link active"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    router.push('/blog');
+                  }}
+                >
+                  ホーム
+                </a>
+              </li>
+            )}
             <li>
               <Link 
                 href="/" 
                 className="nav-link"
-                onClick={() => setIsMenuOpen(false)}
               >
                 ポートフォリオ
               </Link>

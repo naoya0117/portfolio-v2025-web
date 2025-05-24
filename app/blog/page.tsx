@@ -65,7 +65,7 @@ export default function BlogPage() {
 
         <section className="search-filter">
           <div className="search-bar">
-            <input type="text" className="search-input" placeholder="記事を検索..." aria-label="記事を検索" disabled />
+            <input type="text" className="search-input" placeholder="記事を検索..." aria-label="記事を検索" disabled value="" />
           </div>
           <div className="filter-tags" role="tablist" aria-label="記事フィルター">
             <button className="tag active" role="tab" aria-selected="true">すべて</button>
@@ -186,7 +186,7 @@ export default function BlogPage() {
             className="search-input" 
             placeholder="記事を検索..." 
             aria-label="記事を検索"
-            value={searchTerm || ''}
+            value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
@@ -268,7 +268,10 @@ export default function BlogPage() {
           <button className="page-btn active" aria-current="page" aria-label="現在のページ, 1">1</button>
           <button className="page-btn" aria-label="2ページ目へ">2</button>
           <button className="page-btn" aria-label="3ページ目へ">3</button>
-          <button className="page-btn" aria-label="次のページへ">次へ</button>
+          {/* Only show the "next" button when there are more pages */}
+          {filteredPosts.length > 10 && (
+            <button className="page-btn" aria-label="次のページへ">次へ</button>
+          )}
         </nav>
       )}
     </div>

@@ -1320,6 +1320,21 @@ footer .container {
         text-align: center;
     }
 
+    /* ブログヘッダーのナビゲーションコンテナは行のままにする */
+    header .nav-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        padding: 0 15px;
+    }
+
+    /* ナビゲーションコンテナ内のnavはマージンなし */
+    header .nav-container nav {
+        margin-top: 0;
+    }
+
     nav {
         margin-top: 15px;
     }
@@ -2145,7 +2160,7 @@ body.slide-transition-active {
     .blog-nav ul {
         justify-content: center;
         gap: 10px;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     .blog-nav-link {

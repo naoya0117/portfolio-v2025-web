@@ -66,8 +66,8 @@ export default function BlogPage() {
     return (
       <div className="container">
         <section className="hero">
-          <h1>エンジニアブログ</h1>
-          <p>学習記録、技術的な発見、プロジェクトの振り返りなど、エンジニアとしての成長をつづっています</p>
+          <h1>Tech Blog</h1>
+          <p>今までに学んだ技術などの備忘録</p>
         </section>
 
         <section className="search-filter">
@@ -120,7 +120,7 @@ export default function BlogPage() {
     return (
       <div className="container">
         <section className="hero">
-          <h1>エンジニアブログ</h1>
+          <h1>Tech Blog</h1>
           <p>記事の読み込みに失敗しました</p>
         </section>
 
@@ -152,7 +152,7 @@ export default function BlogPage() {
     return (
       <div className="container">
         <section className="hero">
-          <h1>エンジニアブログ</h1>
+          <h1>Tech Blog</h1>
           <p>記事がまだありません</p>
         </section>
 
@@ -182,8 +182,8 @@ export default function BlogPage() {
   return (
     <div className="container">
       <section className="hero">
-        <h1>エンジニアブログ</h1>
-        <p>学習記録、技術的な発見、プロジェクトの振り返りなど、エンジニアとしての成長をつづっています</p>
+        <h1>Tech Blog</h1>
+        <p>今までに学んだ技術などの備忘録</p>
       </section>
 
       <section className="search-filter">

@@ -2531,3 +2531,28 @@ body.slide-transition-active {
     text-align: right;
 }
 
+@media(max-width: 1024px) {
+
+    .footer-top {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+    }
+
+    /* Ensure the first section (with title) takes full width */
+    .footer-section:first-child {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-section:first-child {
+        margin-bottom: 1rem;
+    }
+}
+

@@ -9,7 +9,7 @@ export default function Footer() {
           <div className="footer-section">
             <h3 className="footer-title">Naoya&apos;s Portfolio</h3>
             <p className="footer-description">
-              Webエンジニアとしての技術と経験を紹介するポートフォリオサイトです。プロジェクト、スキル、そして私の成長の軌跡をご覧ください。
+              学生エンジニアのポートフォリオサイトです。過去の取り組んだプロジェクトや技術について記述予定です。
             </p>
           </div>
           <div className="footer-section">

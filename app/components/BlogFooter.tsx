@@ -10,7 +10,7 @@ export default function BlogFooter() {
                     <div className="footer-section">
                         <h3 className="footer-title">Naoya&apos;s Blog</h3>
                         <p className="footer-description">
-                            一人のWebエンジニアの技術探求、学習の軌跡、そして時々の考察を記録するブログです。日々の学びが誰かの助けになれば幸いです。
+                            日々の開発などで学んだことを書き留めておくための個人ブログです。
                         </p>
                     </div>
                     <div className="footer-section">

@@ -467,6 +467,10 @@ body {
     flex-direction: column;
 }
 
+.footer-section:first-child .footer-title {
+    text-align: center;
+}
+
 .footer-title {
     font-size: 1.5rem;
     font-weight: 700;
@@ -479,6 +483,8 @@ body {
 }
 
 .footer-description {
+    max-width: 420px;
+    margin: 0 auto;
     color: #718096;
     line-height: 1.6;
     font-size: 0.95rem;
@@ -638,5 +644,21 @@ html {
         grid-template-columns: 1fr 1fr;
         gap: 2rem;
     }
+
+    /* Ensure the first section (with title) takes full width */
+    .footer-section:first-child {
+        grid-column: 1 / -1;
+        margin-bottom: 1rem;
+    }
 }
 
+@media (max-width: 640px) {
+    .footer-top {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-section:first-child {
+        margin-bottom: 1rem;
+    }
+}

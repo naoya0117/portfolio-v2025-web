@@ -35,7 +35,15 @@ export default function Header() {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
     e.preventDefault();
-    slideToSection(sectionId);
+    if (sectionId === 'top') {
+      // ページトップにスムーススクロール
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      slideToSection(sectionId);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent, action: () => void) => {
@@ -128,8 +136,8 @@ export default function Header() {
         <div className="header-content">
           <div className="portfolio-brand">
             <a 
-              href="#hero" 
-              onClick={(e) => handleNavClick(e, 'hero')}
+              href="#top" 
+              onClick={(e) => handleNavClick(e, 'top')}
               className="portfolio-logo-link"
             >
               <span className="portfolio-logo">Naoya&apos;s</span>

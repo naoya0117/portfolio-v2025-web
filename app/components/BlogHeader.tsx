@@ -55,10 +55,14 @@ export default function BlogHeader() {
         <div className="blog-header-content">
           <div className="blog-brand">
             <a 
-              href="#" 
+              href="#top" 
               onClick={(e) => {
                 e.preventDefault();
-                router.push('/');
+                // ページトップにスムーススクロール
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                });
               }}
               className="blog-home-link"
             >
@@ -68,18 +72,6 @@ export default function BlogHeader() {
           </div>
           <nav className="blog-nav">
             <ul>
-              <li>
-                <a 
-                  href="#" 
-                  onClick={(e) => {
-                    e.preventDefault();
-                  }}
-                  className="blog-nav-link"
-                >
-                  <i className="fas fa-user-circle"></i>
-                  ポートフォリオ
-                </a>
-              </li>
               <li>
                 <a 
                   href="#" 
@@ -98,13 +90,12 @@ export default function BlogHeader() {
                   href="#" 
                   onClick={(e) => {
                     e.preventDefault();
-                    // 新しいタブでWordPressの管理画面を開く
-                    window.open(`${process.env.NEXT_PUBLIC_WORDPRESS_API_URL?.replace('/wp-json/wp/v2', '')}/wp-admin`, '_blank');
+                    router.push('/');
                   }}
-                  className="blog-nav-link blog-admin-link"
+                  className="blog-nav-link"
                 >
-                  <i className="fas fa-edit"></i>
-                  記事を書く
+                  <i className="fas fa-user-circle"></i>
+                  ポートフォリオ
                 </a>
               </li>
               <li>

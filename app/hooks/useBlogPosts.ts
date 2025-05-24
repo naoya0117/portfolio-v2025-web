@@ -93,7 +93,7 @@ export function useBlogPosts(page: number = 1, limit: number = 10): UseBlogPosts
       } catch (err) {
         console.error('Failed to fetch blog posts:', err);
         const errorMessage = err instanceof Error ? err.message : 'Failed to fetch blog posts';
-        setError(`WordPress API接続エラー: ${errorMessage}`);
+        setError(`コンテンツの取得に失敗しました: ${errorMessage}`);
       } finally {
         setLoading(false);
       }
@@ -143,7 +143,7 @@ export function useBlogPost(slug: string): UseBlogPostReturn {
       } catch (err) {
         console.error('Error fetching post:', err);
         const errorMessage = err instanceof Error ? err.message : '記事の取得に失敗しました';
-        setError(`WordPress API接続エラー: ${errorMessage}`);
+        setError(`コンテンツの取得に失敗しました: ${errorMessage}`);
         setPost(null);
       } finally {
         setLoading(false);
